@@ -15,14 +15,13 @@ cache="$ZSH_CACHE_DIR/wdnote-ignore"
 	[[ "$purge" -le "$now" ]] &&
 		print "$(date --utc --date="1 month" +%s)" >| "$cache/next_purge"
 
-	# Delete ignore file if directory does not exist or is expired
 	local files=($(ls --literal -1 --ignore='[^|]*' $cache))
 	for file in $files ; do
-		print "$file"
-		file="${file:gs/|/\/}"
-		local expire="$(cat "$file")"
+		local dir="${file:gs/|/\/}"
+		local expire="$(cat "$cache/$file")"
 
-		[[ "$expire" -le "$now" ]] &&
+		# Delete ignore file if expired or directory does not exist
+		[[ "$expire" -le "$now" || ! -d "$dir" ]] &&
 			rm "$file"
 	done
 }
