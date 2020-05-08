@@ -1,4 +1,5 @@
 # wdnote
+
 wdnote is a Zsh plugin that prints a local file, titled `.wdnote`, if present upon changing directories.
 
 You can suppress the wdnote in any number of specific directories for a given amount of time.
@@ -32,6 +33,9 @@ wdnote help
 ```
 
 ## [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh) installation
+
 ```zsh
 curl --create-dirs -o "$ZSH_CUSTOM/plugins/wdnote/wdnote.plugin.zsh" "https://raw.githubusercontent.com/Vesdii/zsh-wdnote/master/wdnote.plugin.zsh"
 ```
+
+Add `wdnote` to `plugins` array in `.zshrc`.
