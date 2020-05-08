@@ -57,33 +57,40 @@ _chpwd_wdnote
 # Permanently or temporarily ignore wdnote in current path
 wdnote() {
 	if [[ "$#" -eq "0" ]] ; then
-		print "wdnote: missing arguments: usage:"
+		cat ".wdnote"
+		return 0
+
+	elif [[ "$1" == "help" ]] ; then
+		print "wdnote: usage:"
 		print "\twdnote stop [ \33[4mignore-time\33[m ]"
 		print "\twdnote resume"
-		return 1
+		return 0
+
 	elif [[ "$1" == "resume" ]] ; then
 		[[ -f "$ZSH_WDNOTE_IGNORE" ]] &&
 			rm "$ZSH_WDNOTE_IGNORE"
 		return 0
+
 	elif [[ "$1" == "stop" ]] ; then
 		shift
-		# Permanent ignore if no more parameters
+		# Indefinite ignore if no more parameters
 		if [[ "$#" -eq "0" ]] ; then
 			local expire="9999999999"
+
 		else
-			# NOTE not accepting +%s as part of command
+			# NOTE: BUG: not accepting +%s as part of command
 			local expire="$(date --utc --date="$@" +%s)"
 			if [[ "$?" -ne "0" ]] ; then
 				print "wdnote: invalid ignore time '$@': see \33[4mman date\33[m"
 				return 1
 			fi
 		fi
+
 	else
-		print "wdnote: invalid arguments: usage:"
-		print "\twdnote stop [ \33[4mignore-time\33[m ]"
-		print "\twdnote resume"
+		print "wdnote: invalid arguments: see \33[4mwdnote help\33[m"
 		return 1
 	fi
+
 	local now="$(date --utc +%s)"
 
 	# Prevent redundancies
