@@ -86,6 +86,12 @@ wdnote() {
 			fi
 		fi
 
+	elif [[ "$1" == "list" ]] ; then
+		local files="$(ls --literal -1 --ignore='[^|]*' "$ZSH_CACHE_DIR/wdnote-ignore")"
+		files="${files:gs/|/\/}"
+		print "$files"
+		return 0
+
 	else
 		print "wdnote: invalid arguments: see \33[4mwdnote help\33[m"
 		return 1
