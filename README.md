@@ -22,6 +22,11 @@ Resume printing note:
 wdnote resume
 ```
 
+List ignored directories:
+```zsh
+wdnote list
+```
+
 Print note:
 ```zsh
 wdnote

@@ -64,6 +64,7 @@ wdnote() {
 		print "wdnote: usage:"
 		print "\twdnote stop [ \33[4mignore-time\33[m ]"
 		print "\twdnote resume"
+		print "\twdnote list"
 		return 0
 
 	elif [[ "$1" == "resume" ]] ; then
