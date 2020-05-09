@@ -34,6 +34,12 @@ wdnote help
 
 ## [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh) installation
 
+Option 1:
+```zsh
+git clone "https://github.com/Vesdii/zsh-wdnote" "$ZSH_CUSTOM/plugins/wdnote"
+```
+
+Option 2:
 ```zsh
 curl --create-dirs -o "$ZSH_CUSTOM/plugins/wdnote/wdnote.plugin.zsh" "https://raw.githubusercontent.com/Vesdii/zsh-wdnote/master/wdnote.plugin.zsh"
 ```
