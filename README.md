@@ -2,24 +2,19 @@
 
 wdnote is a Zsh plugin that prints a local file, titled `.wdnote`, if present upon changing directories.
 
-You can suppress the wdnote in any number of specific directories for a given amount of time.
-
-Using a description compatible with the `--date` option of [GNU date](https://www.gnu.org/software/coreutils/manual/html_node/Examples-of-date.html), ignore wdnote in current working directory for given duration or future date:
-
-**(BROKEN)**
+Print note:
 ```zsh
-wdnote stop 3 weeks 2 days 1 hour
-wdnote stop October 10 2020 3 AM
+wdnote
 ```
 
-Stop showing until resumed:
+Ignore current working directory's wdnote until resumed:
 ```zsh
 wdnote stop
 ```
 
 Resume printing note:
 ```zsh
-wdnote resume
+wdnote show
 ```
 
 List ignored directories:
@@ -27,12 +22,12 @@ List ignored directories:
 wdnote list
 ```
 
-Print note:
+Clean up wdnote's cache by deleting ignore files of no longer existing directories:
 ```zsh
-wdnote
+wdnote clean
 ```
 
-Show help:
+List commands:
 ```zsh
 wdnote help
 ```
@@ -49,4 +44,4 @@ Option 2:
 curl --create-dirs -o "$ZSH_CUSTOM/plugins/wdnote/wdnote.plugin.zsh" "https://raw.githubusercontent.com/Vesdii/zsh-wdnote/master/wdnote.plugin.zsh"
 ```
 
-Add `wdnote` to `plugins` array in `.zshrc`.
+Add `wdnote` to the `plugins` array in `.zshrc`.
