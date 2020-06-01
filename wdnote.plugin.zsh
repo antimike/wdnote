@@ -1,56 +1,58 @@
-# Ensure cache directory exists
-mkdir "$ZSH_CACHE_DIR/wdnote-ignore" &> /dev/null
+touch $ZSH_CACHE_DIR/wdnote_ignore
+
+WDNOTE_IGNORE=($(< $ZSH_CACHE_DIR/wdnote_ignore))
+
+wdnote () {
+	# Print wdnote if it exists
+	if [[ $# -eq 0 ]] ; then
+		[[ -f $PWD/.wdnote ]] &&
+			< $PWD/.wdnote
+
+	# Ignore current directory
+	elif [[ $1 == stop ]] ; then
+		if [[ $WDNOTE_IGNORE[(I)$PWD] -eq 0 ]] ; then
+			WDNOTE_IGNORE+=($PWD)
+			<<< $WDNOTE_IGNORE >> $ZSH_CACHE_DIR/wdnote_ignore
+		fi
+
+	# Stop ignoring current directory
+	elif [[ $1 == show ]] ; then
+		WDNOTE_IGNORE=(${WDNOTE_IGNORE:#$PWD})
+		<<< $WDNOTE_IGNORE > $ZSH_CACHE_DIR/wdnote_ignore
+
+	# List ignored directories
+	elif [[ $1 == list ]] ; then
+		<<< ${(F)WDNOTE_IGNORE}
+	
+	# Remove nonexistent directories from ignore list
+	elif [[ $1 == clean ]] ; then
+		for dir in $WDNOTE_IGNORE ; do
+			if [[ ! -d $dir ]] ; then
+				WDNOTE_IGNORE=(${WDNOTE_IGNORE:#$dir})
+				<<< $dir
+			fi
+		done
+		<<< $WDNOTE_IGNORE > $ZSH_CACHE_DIR/wdnote_ignore
+
+	# Print help
+	elif [[ $1 == help ]] ; then
+		<<- EOF
+		wdnote usage:
+		    wdnote
+		    wdnote stop
+		    wdnote show
+		    wdnote list
+		    wdnote clean
+		EOF
+
+	# Argument error
+	else
+		<<< "wdnote: invalid arguments: see 'wdnote help'"
+		return 1
+	fi
+}
 
 # Listen for directory changes
 autoload -Uz add-zsh-hook
 add-zsh-hook chpwd _chpwd_wdnote
-_chpwd_wdnote () {
-	ZSH_WDNOTE_IGNORE="$ZSH_CACHE_DIR/wdnote-ignore/${PWD:gs/\//|}"
-
-	# If not being ignored, print wdnote
-	[[ ! -f "$ZSH_WDNOTE_IGNORE" ]] &&
-		cat "$PWD/.wdnote" 2> /dev/null
-}
-_chpwd_wdnote
-
-wdnote () {
-	local files dir
-
-	if [[ "$#" -eq "0" ]] ; then
-		cat "$PWD/.wdnote"
-
-	elif [[ "$1" == "stop" ]] ; then
-		touch "$ZSH_WDNOTE_IGNORE"
-
-	elif [[ "$1" == "show" ]] ; then
-		rm "$ZSH_WDNOTE_IGNORE" &> /dev/null
-
-	elif [[ "$1" == "list" ]] ; then
-		files="$(ls --literal -1 "$ZSH_CACHE_DIR/wdnote-ignore")"
-		[[ -n "$files" ]] &&
-			print "${files:gs/|/\/}"
-	
-	elif [[ "$1" == "clean" ]] ; then
-		files=($(ls --literal -1 "$ZSH_CACHE_DIR/wdnote-ignore"))
-		for file in $files ; do
-			dir="${file:gs/|/\/}"
-			if [[ ! -d "$dir" ]] ; then
-				rm "$ZSH_CACHE_DIR/wdnote-ignore/$file"
-				print "\33[31m$dir\33[m"
-			fi
-		done
-
-	elif [[ "$1" == "help" ]] ; then
-		print "wdnote: usage:"
-		print "\twdnote stop"
-		print "\twdnote show"
-		print "\twdnote list"
-		print "\twdnote clean"
-
-	else
-		print "wdnote: invalid arguments: see \33[4mwdnote help\33[m"
-		return 1
-	fi
-
-	return 0
-}
+function _chpwd_wdnote { [[ $WDNOTE_IGNORE[(I)$PWD] -eq 0 ]] && wdnote }
