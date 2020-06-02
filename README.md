@@ -22,7 +22,7 @@ List ignored directories:
 wdnote list
 ```
 
-Clean up wdnote's cache by deleting ignore files of no longer existing directories:
+Clean up wdnote's storage by removing nonexistent directories from the ignore list:
 ```zsh
 wdnote clean
 ```
