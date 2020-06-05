@@ -56,3 +56,4 @@ wdnote () {
 autoload -Uz add-zsh-hook
 add-zsh-hook chpwd _chpwd_wdnote
 function _chpwd_wdnote { [[ $WDNOTE_IGNORE[(I)$PWD] -eq 0 ]] && wdnote }
+_chpwd_wdnote
