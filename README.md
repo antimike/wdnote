@@ -2,6 +2,8 @@
 
 wdnote is a Zsh plugin that prints a local file, titled `.wdnote`, if present upon changing directories.
 
+This is the branch for use with [Prezto](https://github.com/sorin-ionescu/prezto). For use with [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh), see that branch.
+
 Print note:
 ```
 wdnote
