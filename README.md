@@ -32,10 +32,10 @@ List commands:
 wdnote help
 ```
 
-## [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh) installation
+## Installation
 
 ```
-git clone https://github.com/Vesdii/wdnote $ZSH_CUSTOM/plugins
+git clone --branch ohmyzsh https://github.com/Vesdii/wdnote $ZSH_CUSTOM/plugins
 ```
 
 Add `wdnote` to the `plugins` array in your `.zshrc`.
