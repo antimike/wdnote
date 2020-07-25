@@ -1,6 +1,6 @@
-touch $ZSH_CACHE_DIR/wdnote_ignore
-
-WDNOTE_IGNORE=($(< $ZSH_CACHE_DIR/wdnote_ignore))
+WDNOTE_IGNORE_FILE="/tmp/wdnote_ignore.$(id --user)"
+touch $WDNOTE_IGNORE_FILE
+WDNOTE_IGNORE=($(< $WDNOTE_IGNORE_FILE))
 
 wdnote () {
 	# Print wdnote if it exists
@@ -12,13 +12,13 @@ wdnote () {
 	elif [[ $1 == stop ]] ; then
 		if [[ $WDNOTE_IGNORE[(I)$PWD] -eq 0 ]] ; then
 			WDNOTE_IGNORE+=($PWD)
-			<<< $WDNOTE_IGNORE >> $ZSH_CACHE_DIR/wdnote_ignore
+			<<< $WDNOTE_IGNORE >> $WDNOTE_IGNORE_FILE
 		fi
 
 	# Stop ignoring current directory
 	elif [[ $1 == show ]] ; then
 		WDNOTE_IGNORE=(${WDNOTE_IGNORE:#$PWD})
-		<<< $WDNOTE_IGNORE > $ZSH_CACHE_DIR/wdnote_ignore
+		<<< $WDNOTE_IGNORE > $WDNOTE_IGNORE_FILE
 
 	# List ignored directories
 	elif [[ $1 == list ]] ; then
@@ -32,7 +32,7 @@ wdnote () {
 				<<< $dir
 			fi
 		done
-		<<< $WDNOTE_IGNORE > $ZSH_CACHE_DIR/wdnote_ignore
+		<<< $WDNOTE_IGNORE > $WDNOTE_IGNORE_FILE
 
 	# Print help
 	elif [[ $1 == help ]] ; then

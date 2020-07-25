@@ -32,10 +32,11 @@ List commands:
 wdnote help
 ```
 
-## [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh) installation
+## Installation
 
 ```
-git clone https://github.com/Vesdii/wdnote $ZSH_CUSTOM/plugins
+mkdir -p $ZPREZTODIR/contrib
+git submodule add --force https://github.com/Vesdii/wdnote $ZPREZTODIR/contrib/wdnote
 ```
 
-Add `wdnote` to the `plugins` array in your `.zshrc`.
+Load the module in your `.zpreztorc`.
