@@ -35,7 +35,7 @@ wdnote help
 ## [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh) installation
 
 ```
-git clone https://github.com/Vesdii/zsh-wdnote $ZSH_CUSTOM/plugins/wdnote
+git clone https://github.com/Vesdii/wdnote $ZSH_CUSTOM/plugins
 ```
 
 Add `wdnote` to the `plugins` array in your `.zshrc`.
