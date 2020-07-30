@@ -1,38 +1,38 @@
-touch $ZSH_CACHE_DIR/wdnote_ignore
-
-WDNOTE_IGNORE=($(< $ZSH_CACHE_DIR/wdnote_ignore))
+WDNOTE_IGNORE_FILE="/tmp/wdnote_ignore.$(id --user)"
+touch $WDNOTE_IGNORE_FILE
+WDNOTE_IGNORE=($(cat $WDNOTE_IGNORE_FILE))
 
 wdnote () {
 	# Print wdnote if it exists
 	if [[ $# -eq 0 ]] ; then
 		[[ -f $PWD/.wdnote ]] &&
-			< $PWD/.wdnote
+			cat $PWD/.wdnote
 
 	# Ignore current directory
 	elif [[ $1 == stop ]] ; then
 		if [[ $WDNOTE_IGNORE[(I)$PWD] -eq 0 ]] ; then
 			WDNOTE_IGNORE+=($PWD)
-			<<< $WDNOTE_IGNORE >> $ZSH_CACHE_DIR/wdnote_ignore
+			echo $WDNOTE_IGNORE >>! $WDNOTE_IGNORE_FILE
 		fi
 
 	# Stop ignoring current directory
 	elif [[ $1 == show ]] ; then
 		WDNOTE_IGNORE=(${WDNOTE_IGNORE:#$PWD})
-		<<< $WDNOTE_IGNORE > $ZSH_CACHE_DIR/wdnote_ignore
+		echo $WDNOTE_IGNORE >! $WDNOTE_IGNORE_FILE
 
 	# List ignored directories
 	elif [[ $1 == list ]] ; then
-		<<< ${(F)WDNOTE_IGNORE}
+		echo ${(F)WDNOTE_IGNORE}
 	
 	# Remove nonexistent directories from ignore list
 	elif [[ $1 == clean ]] ; then
 		for dir in $WDNOTE_IGNORE ; do
 			if [[ ! -d $dir ]] ; then
 				WDNOTE_IGNORE=(${WDNOTE_IGNORE:#$dir})
-				<<< $dir
+				echo $dir
 			fi
 		done
-		<<< $WDNOTE_IGNORE > $ZSH_CACHE_DIR/wdnote_ignore
+		echo $WDNOTE_IGNORE >! $WDNOTE_IGNORE_FILE
 
 	# Print help
 	elif [[ $1 == help ]] ; then
@@ -47,7 +47,7 @@ wdnote () {
 
 	# Argument error
 	else
-		<<< "wdnote: invalid arguments: see 'wdnote help'"
+		echo "wdnote: invalid arguments: see 'wdnote help'"
 		return 1
 	fi
 }
