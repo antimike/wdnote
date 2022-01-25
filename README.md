@@ -38,7 +38,7 @@ wdnote help
 
 ```
 mkdir -p $ZPREZTODIR/contrib
-git submodule add --force https://github.com/Vesdii/wdnote $ZPREZTODIR/contrib/wdnote
+git submodule add --force https://github.com/sevenhearted/wdnote $ZPREZTODIR/contrib/wdnote
 ```
 
 Load the module in your `.zpreztorc`.
